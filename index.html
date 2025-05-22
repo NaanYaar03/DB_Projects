@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'VT323', monospace;
+            background: #12122e;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .top-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.4); /* optional backdrop behind sticky elements */
+            backdrop-filter: blur(10px);
+            padding-bottom: 10px;     /* for glass effect */
+        }
+
+        .navbar { 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 30px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .navbar a {
+            color: #00e5ff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            font-size: 1em;
+        }
+        .navbar a:hover {
+            color: #ff00c1;
+        }
+        .site-title {
+            font-size: 1.5em;
+            background: linear-gradient(90deg, #00e5ff, #ff00c1 );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            background: transparent;
+        }
+        .search-bar input {
+            padding: 10px;
+            width: 50%;
+            border: 2px solid #00e5ff;
+            border-radius: 5px 0 0 5px;
+            background: #25254d;
+            color: #fff;
+            font-size: 1em;
+            font-family: 'VT323', monospace;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            border: 1px solid #ff00c1;
+            background: rgba(255, 0, 193, 0.5);
+            color: #fff;
+            font-weight: bold;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+            font-size: 1em;
+        }
+        .search-bar button:hover {
+            background: #ff00c1;
+        }
+        .main-title {
+            font-size: 3em;
+            background: linear-gradient(90deg, #00e5ff 0%, #ff00c1 100%);
+            background-size: 490px;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .main-title-h2 {
+            font-size: 2em;
+            background: linear-gradient(90deg, #00e5ff, #ff00c1);            
+            background-size: 490px;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+            animation: shine 1.5s linear infinite;
+            animation: shake 1s ease-in-out infinite;
+        }
+        .main-title-h2-sub {
+            font-size: 2em;
+            color: #ff00c1;
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+            animation: shine 1.5s linear infinite;
+            animation: shake 1s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: -1300px 0;
+            }
+            100% {
+                background-position: 1300px 0;
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .description {
+            font-size: 1.5em;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #d3d3d3;
+        }
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+        .project-card {
+            background: #25254d;
+            border: 2px solid #00e5ff;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            height: 280px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .project-card:hover {
+            transform: scale(1.05);
+        }
+        .project-image {
+            width: 100%;
+            height: 50%;
+        }
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px 5px 0 0;
+        }
+        .project-details {
+            width: 100%;
+            height: 50%;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            font-family: 'Silkscreen', sans-serif;
+        }
+        .project-details h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #00e5ff;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: initial;
+            line-height: 1.2;
+        }
+        .project-details button {
+            background: rgba(255, 0, 193, 0.5);
+            border: 1px solid #ff00c1;
+            padding: 8px;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.9em;
+        }
+        .project-details button:hover {
+            background: #ff00c1;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            font-size: 0.9em;
+        }
+        .footer a {
+            color: #00e5ff;
+            text-decoration: none;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #25254d;
+            border: 2px solid #00e5ff;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 700px;
+            width: 90%;
+            position: relative;
+            text-align: center;
+            font-size: 1em;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #fff;
+            background: rgba(255, 0, 193, 0.5);
+            padding: 2px;
+            border: 1px solid #ff00c1;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        .close-btn:hover {
+            background: #ff00c1;
+        }
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 80%;
+            margin: 0 auto 10px;
+            overflow: hidden;
+        }
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+        .carousel-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 5px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 0, 193, 0.5);
+            border: 1px solid #ff00c1;
+            color: #fff;
+            font-size: 1.5em;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .carousel-btn:hover {
+            background: #ff00c1;
+        }
+        .carousel-btn.prev {
+            left: 20px;
+        }
+        .carousel-btn.next {
+            right: 20px;
+        }
+        .project-modal-title {
+            color: #ff00c1;
+            font-size: 1.5em;
+            margin: 10px 0;
+            font-family: 'Silkscreen', sans-serif;
+        }
+        .project-modal-description {
+            color: #d3d3d3;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .project-modal-price {
+            color: #00e5ff;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .project-modal-buy {
+            background: rgba(255, 0, 193, 0.5);
+            border: 1px solid #ff00c1;
+            padding: 10px 20px;
+            width: 30%;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-family: 'VT323', monospace;
+        }
+        .project-modal-buy:hover {
+            background: #ff00c1;
+        }
+        .image-popup-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .image-popup-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            text-align: center;
+        }
+        .image-popup-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+        .image-popup-close {
+            position: absolute;
+            top: -50px;
+            color: white;
+            font-size: 2em;
+            align-items: center;
+            cursor: pointer;
+            background: rgba(255, 0, 193, 0.5);
+            border: 1px solid #ff00c1;            
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .image-popup-close:hover {
+            background: #ff00c1;
+        }
+        .request-project-btn {
+            display:block;
+            margin: 20px auto;
+            background: rgba(255, 0, 193, 0.5);
+            border: 1px solid #ff00c1;
+            padding: 10px 20px;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-family: 'VT323', monospace;
+        }
+        .request-project-btn:hover {
+            background: #ff00c1;
+        }
+        .request-modal-message {
+            color: #d3d3d3;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .comment-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 0, 193, 0.5);
+            border: 2px solid #ff00c1;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow:
+                0 0 10px #00e5ff,
+                0 0 20px #ff00c1;
+        }
+        .comment-btn:hover {
+            background: #ff00c1;
+        }
+        .comment-modal-gallery {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px;
+            max-width: 100%;
+        }
+        .comment-modal-gallery img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #ff00c1;
+            font-size: 16px;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #ff00c1;
+            margin: 2px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Menu open state for hamburger animation */
+        .hamburger.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        @media screen and (max-width: 600px) {
+            .modal-content {
+                max-width: 85%;
+                height: auto;
+                max-height: 80vh;
+                margin: auto;
+                border-radius: 12px;
+            }
+            .project-modal-buy {
+                width: 80%;
+            }
+            .comment-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2em;
+                box-shadow:
+                0 0 10px #00e5ff,
+                0 0 20px #ff00c1;
+            }
+
+            .main-title-h2 {
+                background: linear-gradient(90deg, #00e5ff, #ff00c1);            
+                background-size: 400px;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .nav-links {
+                display: none; /* Hide links by default */
+                flex-direction: column;
+                position: absolute;
+                top: 60px; /* Adjust based on navbar height */
+                left: 0;
+                right: 0;
+                background-color: rgba(0, 0, 0, 0.7);;
+                padding: 20px;
+                text-align: center;
+                z-index: 1000;
+            }
+        
+            .nav-links.active {
+                display: flex; /* Show links when active */
+            }
+        
+            .hamburger {
+                display: flex; /* Show hamburger menu */
+            }
+        } 
+
+        .div{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .div img{           
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            box-shadow:
+                0 0 10px #00e5ff,
+                0 0 20px #ff00c1;
+        }
+
+        .strikethrough {
+          text-decoration: line-through;
+          text-decoration-color: #00e5ff;
+        }
+
+        #countdown {
+            font-weight: bold;
+            font-size: 2em;
+            background: linear-gradient(90deg, #00e5ff, #ff00c1);            
+            background-size: 490px;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKB6R0FN9G"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-FKB6R0FN9G');
+    </script>
+</head>
+<body>
+    <div class="top-container">
+        <div class="navbar">
+            <div class="site-title">PROJECT STORE</div>
+            <div class="nav-links">
+                <a href="#" onclick="openModal('aboutModal')">About Us</a>
+                <a href="#" onclick="openModal('contactModal')">Contact Us</a>
+            </div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <form class="search-bar" onsubmit="searchProjects(event)">
+            <input type="text" id="searchInput" placeholder="Search projects..." oninput="searchProjects(event)">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h1 class="main-title">SOUL SOCIETY</h1>
+        <p class="description">
+            Welcome to Soul Society!
+        </p>
+        <div class="div">
+            <h1 class="main-title-h2-sub">Discount : <span class="strikethrough">Rs.50</span> Rs.30</h1>
+            <h2 class="main-title-h2">Time left until 11:59 PM in 2 days:</h2>
+            <div id="countdown">Loading...</div>
+        </div>
+
+        <button class="request-project-btn" onclick="openModal('requestProjectModal')">Request Project</button>
+
+        <div class="projects" id="projectList"></div>
+    </div>
+
+    <div class="footer">
+        <p>Organized by SoulSociety | <a href="#">Powered by SoulSociety</a></p>
+    </div>
+
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('aboutModal')">X</span>
+            <h2 style="color: #00e5ff; font-size: 1.5em;">About Us</h2>
+            <h3>Within a week you all find. If not its good !</h3>
+        </div>
+    </div>
+
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('contactModal')">X</span>
+            <h2 style="color: #00e5ff; font-size: 1.5em;">Contact</h2>
+            <h3><a href="https://www.instagram.com/soul_society_003" target="_blank" style="color:#ff00c1; font-weight: lighter;">insta : soul_society_003</a></h3>
+            <h3 style="font-weight: lighter;">mail : rdjbgm@gmail.com</h3>
+            <h3 style="font-weight: lighter;">Any Queries, we will replay. Any error, we will solve</h3>
+            <h3 style="font-weight: lighter;">Code change : 1 time, Error free : infinity</h3>
+        </div>
+    </div>
+
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('projectModal')">X</span>
+            <div class="carousel-container">
+                <div class="carousel-inner" id="carouselInner"></div>
+                <button class="carousel-btn prev" onclick="prevSlide()">❮</button>
+                <button class="carousel-btn next" onclick="nextSlide()">❯</button>
+            </div>
+            <h2 class="project-modal-title" id="projectModalTitle"></h2>
+            <p class="project-modal-description" id="projectModalDescription"></p>
+            <p class="project-modal-price">Price: Rs.30</p>
+            <button class="project-modal-buy" onclick="buyProject()">Buy Now</button>
+        </div>
+    </div>
+
+    <div id="imagePopupModal" class="image-popup-modal">
+        <div class="image-popup-content">
+            <span class="image-popup-close" onclick="closeModal('imagePopupModal')">CLOSE</span>
+            <img id="popupImage" src="" alt="Full-screen image">
+        </div>
+    </div>
+
+    <div id="requestProjectModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('requestProjectModal')">X</span>
+            <p class="request-modal-message">If your project is not there, give request</p>
+            <h3><a href="https://www.instagram.com/soul_society_003" target="_blank" style="color:#ff00c1;">Click : soul_society_003</a></h3>
+        </div>
+    </div>
+
+    <div id="commentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('commentModal')">X</span>
+            <h2 style="color: #00e5ff; font-size: 1.5em;">Sended</h2>
+            <div class="comment-modal-gallery" id="commentGallery">
+                <!-- Images will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <button class="comment-btn" onclick="openModal('commentModal')" title="View Comments & Gallery">
+    <img src="soul.jpg" alt="Comments" style="height: 45px; width: 45px; vertical-align: middle; border-radius: 50%;">
+</button>
+
+    <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+            return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+                try {
+                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    var filteredData = jsonData.filter(row => row.some(filledCell));
+                    var headerRowIndex = filteredData.findIndex((row, index) =>
+                        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                    );
+                    if (headerRowIndex === -1 || headerRowIndex > 25) {
+                        headerRowIndex = 0;
+                    }
+                    var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                    return csv;
+                } catch (e) {
+                    console.error(e);
+                    return "";
+                }
+            }
+            return gk_fileData[filename] || "";
+        }
+
+        const projects = [
+            {
+                id: 1,
+                name: "Vehicle Parking Management System",
+                description: "Design and Develop a Vehicle Parking Management System to efficiently manage parking space availability, track vehicle entries and exits, calculate parking fees based on duration, and generate usage and payment reports for improved management and user experience.",
+                screenshots: [
+                    'images/54-1.png',
+                    'images/54-2.png',
+                    'images/54-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 2,
+                name: "Traffic Management",
+                description: "For your DBMS project on a **Traffic Management System**, design a database to manage `Vehicles`, `Drivers`, `Violations`, and `Traffic Signals`. Implement SQL queries for CRUD operations and submit the schema, queries, and a brief report.",
+                screenshots: [
+                    'images/13-1.png',
+                    'images/13-2.png',
+                    'images/13-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 3,
+                name: "Supply chain operations",
+                description: "Building a database to streamline supply chain operations.",
+                screenshots: [
+                    'images/01-1.png',
+                    'images/01-2.png',
+                    'images/01-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 4,
+                name: "Mini Quora",
+                description: "a platform to share our thoughts or doubts , other users can reply to the thoughts and also get upvoted / downvoted based on the others opinion. The website should display the thoughts  with highest upvotes in the home page",
+                screenshots: [
+                    'images/04-1.png',
+                    'images/04-2.png',
+                    'images/04-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 5,
+                name: "Movie ticket booking",
+                description: "Design and develop a Movie Ticket Booking System to book movie tickets online, manage showtimes, and generate tickets. Features include searching for movies, selecting showtimes, booking tickets, generating tickets, and handling cancellations.",
+                screenshots: [
+                    'images/10-1.png',
+                    'images/10-2.png',
+                    'images/10-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 6,
+                name: "Story Sharing Platform",
+                description: "where users can share their own stories and readers can read them , share them , comment on them , like them , subscribe to that author .... Every action must be notified to the respective story author or publisher , it should also allow collaborative story publishing , and also there must be seperate page for displaying each authors bio with number of subscribers, number of stories published also with the stories piblished by the author",
+                screenshots: [
+                    'images/06-1.png',
+                    'images/06-2.png',
+                    'images/06-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 7,
+                name: "Online voting system",
+                description: "Design and develop a Online Voting System  to conduct simple online polls or surveys. Allow users to cast votes and view results. Create polls, collect votes, and display results in real-time.",
+                screenshots: [
+                    'images/09-1.png',
+                    'images/09-2.png',
+                    'images/09-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 8,
+                name: "Hospital Management System",
+                description: "Design and develop a Hospital Management System  to manage patient records, appointments, doctor schedules, and treatment details. The system should allow for the efficient management of patient admissions, track medical histories, and generate invoices for treatments.",
+                screenshots: [
+                    'images/07-1.png',
+                    'images/07-2.png',
+                    'images/07-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 9,
+                name: "Real time stock monitor",
+                description: "Design and develop a system that monitors real-time stock prices across multiple companies and markets. This system should track price fluctuations, display live updates, and allow users to set price thresholds for receiving alerts when specific stocks reach predefined values.",
+                screenshots: [
+                    'images/11-1.png',
+                    'images/11-2.png',
+                    'images/11-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 10,
+                name: "Mini gmail platform",
+                description: "create a platform to send and receive mail , user can reply to that mail , forward it , bookmark it and also user should be notified if the receiver opened the mail , the mails should be filterable by date of sending , date of opening , date of receiving , subject",
+                screenshots: [
+                    'images/08-1.png',
+                    'images/08-2.png',
+                    'images/08-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 11,
+                name: "Patient appoinment scheduling system",
+                description: "Design and develop a Patient Appointment Scheduling System to schedule appointments for patients with doctors. Allow patients to schedule appointments, view doctor availability, and receive reminders. Manage doctor schedules and handle cancellations.",
+                screenshots: [
+                    'images/12-1.png',
+                    'images/12-2.png',
+                    'images/12-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 12,
+                name: "Temple dharshan booking",
+                description: "Dharshan timing slot booking for the temples with users credetials.",
+                screenshots: [
+                    'images/20-1.png',
+                    'images/20-2.png',
+                    'images/20-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 13,
+                name: "Car Rental System",
+                description: "Design and develop a Car Rental System to manage car rentals, including car availability, customer bookings, and billing. Allow users to browse available cars, make reservations, manage rentals, and generate invoices.",
+                screenshots: [
+                    'images/14-1.png',
+                    'images/14-2.png',
+                    'images/14-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 14,
+                name: "Food ordering system",
+                description: "Design and develop a Food Ordering System which allow users to order food from restaurants. Store restaurant menus, customer orders, and delivery information. Manage orders, process payments, and handle delivery logistics.",
+                screenshots: [
+                    'images/61-1.png',
+                    'images/61-2.png',
+                    'images/61-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 15,
+                name: "Pharmacy Management System",
+                description: "Design and Develop a Pharmacy Management System to efficiently manage inventory, sales, and customer records in a pharmacy. The system should allow for real-time tracking of stock levels, facilitate the management of prescriptions, generate invoices, and provide reports on sales and stock usage. It should streamline the process of ordering medicines, handling customer transactions, and ensuring compliance with regulatory requirements.",
+                screenshots: [
+                    'images/58-1.png',
+                    'images/58-2.png',
+                    'images/58-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 16,
+                name: "Carbon Emission monitor",
+                description: "design a database to monitor and analyze carbon emissions across industries or locations.",
+                screenshots: [
+                    'images/57-1.png',
+                    'images/57-2.png',
+                    'images/57-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 17,
+                name: "A quiz app",
+                description: "teachers can create quiz and host it , students can participate and view their rank , teaches should be able to see the overall performance",
+                screenshots: [
+                    'images/56-1.png',
+                    'images/56-2.png',
+                    'images/56-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 18,
+                name: "Hotel Reservation System",
+                description: "Design and develop a Hotel Reservation System to allow customers to book rooms, manage reservations, and track stay durations. The system should facilitate room availability checking, room pricing, and payment processing. It should also provide administrators with the ability to manage guest check-ins and check-outs, room inventory, billing, and generate reports on occupancy rates, bookings, and revenue.",
+                screenshots: [
+                    'images/55-1.png',
+                    'images/55-2.png',
+                    'images/55-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 19,
+                name: "POS system",
+                description: "building a database for a POS system that manages retail operations.",
+                screenshots: [
+                    'images/53-1.png',
+                    'images/53-2.png',
+                    'images/53-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 20,
+                name: "Personal Expense Tracker",
+                description: "Design and develop a Personal Expense Tracker to track personal expenses (date, category, amount, description). Features include adding/editing expenses, categorizing expenses, generating reports, setting budgets, and tracking spending habits.",
+                screenshots: [
+                    'images/05 - 1.png',
+                    'images/05 - 2.png',
+                    'images/05 - 3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 21,
+                name: "Hostel Management System",
+                description: "it should maintain the attendance of the hostelers , it should provide out pass and sholud also notify the warden if a hosteler is not present or if a hosteler has still not returned before the out pass time , warden should also be able to filter and see the hostelers based on their department, year , room no , floor .... The warden should also be get notified on the birthday of a hosteler",
+                screenshots: [
+                    'images/17-1.png',
+                    'images/17-2.png',
+                    'images/17-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 22,
+                name: "Vehicle Pre-Booking Application",
+                description: "Design and Develop a Vehicle Pre-Booking Application to enable users to book vehicles in advance, manage booking details, and track the status of their reservations. The system should efficiently handle user information, vehicle availability, and booking schedules, ensuring real-time updates, seamless booking confirmations, and effective fleet management.",
+                screenshots: [
+                    'images/15-1.png',
+                    'images/15-2.png',
+                    'images/15-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 23,
+                name: "Mini OLX",
+                description: "a platform to sell and buy products . Products bought, products sold ,  search history and  wishlist should be visible to respective user.",
+                screenshots: [
+                    'images/30-1.png',
+                    'images/30-2.png',
+                    'images/30-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 24,
+                name: "Employee expense track",
+                description: "i) display the total amount for particular month , particular day , particular year ( cost for the company , cost for a particular employee ) ii) display the total amount for the range of months , years , days( cost for the company , cost for a particular employee )iii) display the total number of times a particular employee traveled in a day , a month and in a year....and also the total cost",
+                screenshots: [
+                    'images/16-1.png',
+                    'images/16-2.png',
+                    'images/16-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 25,
+                name: "Bus ticket booking system",
+                description: "New user have to register and authenticated user is allowed to book the ticket from source to destination. can select the seat number, processing the payment can be included.",
+                screenshots: [
+                    'images/52-1.png',
+                    'images/52-2.png',
+                    'images/52-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 26,
+                name: "Mini Github",
+                description: "A platform to share code and altering it . Only authorised user by the code uploader should alter the code.",
+                screenshots: [
+                    'images/51-1.png',
+                    'images/51-2.png',
+                    'images/51-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 27,
+                name: "Recycling center",
+                description: "This project involves designing and implementing a database system to streamline the operations of a recycling center. The project incorporates real-world research, CRUD analysis, and entity-relationship modeling (ERD). It enables students to propose data-driven solutions for improving collection routes, tracking recyclable materials, managing staff information, and optimizing sorting efficiency.",
+                screenshots: [
+                    'images/50-1.png',
+                    'images/50-2.png',
+                    'images/50-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 28,
+                name: "Employee Attendance and Leave Management System",
+                description: "Design and develop an Employee Attendance and Leave Management System  to track employee attendance, leaves, and working hours. The system should automate the process of marking attendance, applying for leave, and approving or rejecting leave requests.",
+                screenshots: [
+                    'images/29-1.png',
+                    'images/29-2.png',
+                    'images/29-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 29,
+                name: "Digi locker app",
+                description: "Authenticated Users can save their Aadhar card image and details,Voter id card details, Education details.",
+                screenshots: [
+                    'images/21-1.png',
+                    'images/21-2.png',
+                    'images/21-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 30,
+                name: "voice based transport",
+                description: "Designed to provide users with an easy-to-use, hands-free interface to obtain real-time information about various transportation options such as buses, trains, flights, or taxis, using voice commands. This system should be accessible to a wide range of users, including those with disabilities or limited access to traditional interfaces like smartphones or computers.",
+                screenshots: [
+                    'images/28-1.png',
+                    'images/28-2.png',
+                    'images/28-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 31,
+                name: "Micro Climate Data Management System",
+                description: "Design and Develop a Micro Climate Data Management System to collect, store, and analyze microclimate data such as temperature, humidity, wind speed, and precipitation from various geographic locations. The system should allow users to input, retrieve, and visualize real-time and historical climate data, generate reports, and provide insights for research, agriculture, and environmental monitoring. It should also ensure data accuracy, scalability, and efficient management of large datasets.",
+                screenshots: [
+                    'images/22-1.png',
+                    'images/22-2.png',
+                    'images/22-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 32,
+                name: "CRM system",
+                description: "Create a CRM system to manage customer loyalty points and rewards based on their purchases and interactions.",
+                screenshots: [
+                    'images/27-1.png',
+                    'images/27-2.png',
+                    'images/27-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 33,
+                name: "Book Club Management",
+                description: "Design and develop a Book Club Management system to manage a book club, including book selections, meeting schedules, and member discussions. Store book details, meeting schedules, and member information.",
+                screenshots: [
+                    'images/23-1.png',
+                    'images/23-2.png',
+                    'images/23-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 34,
+                name: "Task management app",
+                description: "build a database-driven task management app, designing tables for tasks, users, deadlines, and statuses to help organize and track tasks efficiently.",
+                screenshots: [
+                    'images/24-1.png',
+                    'images/24-2.png',
+                    'images/24-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 35,
+                name: "monitor and manage remote servers.",
+                description: "creating a database to monitor and manage remote servers.",
+                screenshots: [
+                    'images/26-1.png',
+                    'images/26-2.png',
+                    'images/26-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 36,
+                name: "Student Information Management System",
+                description: "Design and develop a Student Information Management System to store and manage student data such as personal information, academic records, attendance, and grades. The system should enable the efficient addition, retrieval, update of student records and generate academic reports.",
+                screenshots: [
+                    'images/25-1.png',
+                    'images/25-2.png',
+                    'images/25-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 37,
+                name: "Blood Bank Management System",
+                description: "Design and develop a Blood Bank Management System to manage blood donors, recipients, and blood inventory. Features include registering donors, managing inventory, processing blood requests, and ensuring blood safety.",
+                screenshots: [
+                    'images/31-1.png',
+                    'images/31-2.png',
+                    'images/31-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 38,
+                name: "Book store Management System",
+                description: "Design and develop a Book store Management System to manage books, customer orders, and inventory. Allow users to browse books, add to cart, place orders, track order status, and manage inventory.",
+                screenshots: [
+                    'images/32-1.png',
+                    'images/32-2.png',
+                    'images/32-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 39,
+                name: "Expense tracker for small business",
+                description: "Design and develop an Expense Tracker for a Small Business to track business expenses, including invoices, payments, and receipts. Allow users to record expenses, generate reports, manage invoices, and categorize expenses.",
+                screenshots: [
+                    'images/33-1.png',
+                    'images/33-2.png',
+                    'images/33-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 40,
+                name: "Fitness Tracker application",
+                description: "Design and Develop a Fitness Tracker application to allow users to track their physical activities, monitor health metrics (such as steps, calories burned, and exercise duration), and set fitness goals. The system should store user data, provide real-time updates, generate personalized reports, and offer insights to help users improve their fitness levels over time.",
+                screenshots: [
+                    'images/34-1.png',
+                    'images/34-2.png',
+                    'images/34-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 41,
+                name: "Payroll Management System",
+                description: "Design and develop a Payroll Management System  to automate the calculation and management of employee salaries, deductions, bonuses, and tax information. The system should enable the generation of pay slips, track attendance and leave records, and ensure accurate, timely payroll processing.",
+                screenshots: [
+                    'images/35-1.png',
+                    'images/35-2.png',
+                    'images/35-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 42,
+                name: "Medication Reminder System",
+                description: "Design and develop a Medication Reminder System to create reminders for medication schedules. Store medication information, dosage, and reminder times. Send reminders to users.",
+                screenshots: [
+                    'images/36-1.png',
+                    'images/36-2.png',
+                    'images/36-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 43,
+                name: "movie based on the region",
+                description: "Registered Users can log into the application, pick the movie based on the region. Then they can select the desired seats and payment processing.",
+                screenshots: [
+                    'images/37-1.png',
+                    'images/37-2.png',
+                    'images/37-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 44,
+                name: "E-commerce platform",
+                description: "Design and develop a Simple E-commerce Platform to manage products, customer accounts, and orders for a small online store. Features include browsing products, adding to cart, placing orders, processing payments, and managing inventory.",
+                screenshots: [
+                    'images/38-1.png',
+                    'images/38-2.png',
+                    'images/38-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 45,
+                name: "Contact Management System",
+                description: "Design and develop a Contact Management System to store and manage contact information (name, phone, email, address). Features include adding/editing/deleting contacts, searching contacts, grouping contacts, and exporting/importing contacts.",
+                screenshots: [
+                    'images/39-1.png',
+                    'images/39-2.png',
+                    'images/39-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 46,
+                name: "Article management system",
+                description: "users can share article , get likes , comments and users can also read articles can bookmark others articles.",
+                screenshots: [
+                    'images/40-1.png',
+                    'images/40-2.png',
+                    'images/40-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 47,
+                name: "College Event Management System",
+                description: "Design and Develop a College Event Management System  to streamline the process of planning, organizing, and managing events at a college. The system should allow users to create, update, and track events, manage registrations, allocate resources, and generate reports on event participation. It should also provide real-time notifications, ensure efficient event coordination, and improve overall management for both students and faculty.",
+                screenshots: [
+                    'images/41-1.png',
+                    'images/41-2.png',
+                    'images/41-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 48,
+                name: "Simple baking system",
+                description: "Authenticated User is permitted to view their transaction history. User registration is provided for New User.",
+                screenshots: [
+                    'images/46-1.png',
+                    'images/46-2.png',
+                    'images/46-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 49,
+                name: "Learning Management System ",
+                description: "Develop a Learning Management System (LMS) that supports multiple user roles, such as Admin, Instructor, and Student, to streamline the management and delivery of educational content. The system allows admins to manage user accounts and courses, instructors to upload and manage course content, and students to access learning materials and track their progress.",
+                screenshots: [
+                    'images/45-1.png',
+                    'images/45-2.png',
+                    'images/45-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 50,
+                name: "Job Portal System",
+                description: "Design and develop a Job Portal System using a Database Management System (DBMS) to store job listings, candidate profiles, and application statuses. The system should allow job seekers to search and apply for jobs, while employers can post vacancies and manage applications. The DBMS should efficiently manage job data, application processes, and candidate resumes, providing both parties with a seamless experience.",
+                screenshots: [
+                    'images/47-1.png',
+                    'images/47-2.png',
+                    'images/47-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 51,
+                name: "Bloggin website",
+                description: "mini version of a working blogging website",
+                screenshots: [
+                    'images/48-1.png',
+                    'images/48-2.png',
+                    'images/48-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 52,
+                name: "A notes webpage",
+                description: "users can take notes , can create a group and store multiple notes inside that group , the date and time of the notes created and altered must be stored and displayed , the notes app should also have the feature to filter notes based on the title , date created , based on the group .. it should also have a bin where deleted notes should be stored for certain period of time after deletion",
+                screenshots: [
+                    'images/49-1.png',
+                    'images/49-2.png',
+                    'images/49-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 53,
+                name: "Electricity Bill Management System",
+                description: "Design and develop an Electricity Bill Management System to automate the process of tracking electricity usage, calculating bills, and managing customer accounts. The system should allow users to view and pay bills, monitor consumption patterns, generate usage reports, and ensure timely payment reminders. It should also enable administrators to manage customer details, update tariffs, and handle billing adjustments, ensuring accuracy and efficiency in billing operations.",
+                screenshots: [
+                    'images/02-1.png',
+                    'images/02-2.png',
+                    'images/02-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 54,
+                name: "Inventory Management System",
+                description: "Design and develop a Inventory Management System to track products, suppliers, and orders. Features include adding/editing products, managing stock levels, placing orders, and generating reports on inventory levels and sales.",
+                screenshots: [
+                    'images/3-1.png',
+                    'images/3-2.png',
+                    'images/3-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 55,
+                name: "Sports management system",
+                description: "A Sports System for Teams and Athletes is a comprehensive platform that combines performance tracking, training management, health monitoring, and strategic analysis to help improve the performance of both teams and individual athletes. This system is used by coaches, trainers, managers, and athletes to make data-driven decisions, optimize training programs, monitor progress, and manage overall well-being.",
+                screenshots: [
+                    'images/59-1.png',
+                    'images/59-2.png',
+                    'images/59-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 56,
+                name: "Customer management system",
+                description: "creating a database to manage customer interactions and data effectively.",
+                screenshots: [
+                    'images/62-1.png',
+                    'images/62-2.png',
+                    'images/62-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 57,
+                name: "Gym Member Management System",
+                description: "Develop a Gym Member Management System to help gym administrators manage members efficiently. Your system should include features such as member registration, login, membership plan selection, attendance tracking, and payment management. Design a proper database to store member details, plan information, and attendance records.",
+                screenshots: [
+                    'images/63-1.png',
+                    'images/63-2.png',
+                    'images/63-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 58,
+                name: "Sports tournament management system",
+                description: "Design and develop a Sports Tournament Management System to automate and streamline the organization and tracking of sports tournaments. The system should allow event organizers to create tournaments, register teams, schedule matches, and record scores. It should provide real-time updates on team rankings, player statistics, and match results. The system also should allow admins to manage player and team information, generate reports, and track the overall progress of the tournament.",
+                screenshots: [
+                    'images/Z1-1.png',
+                    'images/Z1-2.png',
+                    'images/Z1-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 59,
+                name: "Movie Recommandation system",
+                description: "Building an intelligent system to streamline movie discovery through personalized recommendations.",
+                screenshots: [
+                    'images/Z2-1.png',
+                    'images/Z2-2.png',
+                    'images/Z2-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 60,
+                name: "Digital Wallet",
+                description: "Developing a secure digital wallet to simplify online transactions and manage user payments efficiently.",
+                screenshots: [
+                    'images/Z3-1.png',
+                    'images/Z3-2.png',
+                    'images/Z3-3.png'
+                ],
+                price: 'Rs.30'
+            },
+            {
+                id: 61,
+                name: "Online Retail management",
+                description: "DCreating an online retail management system to streamline inventory, orders, and customer interactions for efficient e-commerce operations.",
+                screenshots: [
+                    'images/Z4-1.png',
+                    'images/Z4-2.png',
+                    'images/Z4-3.png'
+                ],
+                price: 'Rs.30'
+            }
+        ];
+
+        // Sample comment gallery images (replace with actual image paths)
+        const commentGalleryImages = [
+            'images/pay-1.png',
+            // 'images/pay-2.png',
+            // 'images/pay-3.png',
+            // 'images/pay-4.png',
+            'images/pay-5.png',
+            'images/pay-6.png',
+            'images/pay-7.png'
+        ];
+
+        // Search functionality
+        function searchProjects(event) {
+            if (event.type === 'submit') {
+                event.preventDefault();
+            }
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filteredProjects = projects.filter(project =>
+                project.name.toLowerCase().includes(searchInput) ||
+                project.description.toLowerCase().includes(searchInput)
+            );
+            displayProjects(filteredProjects);
+        }
+
+        // Display projects
+        function displayProjects(projectList) {
+            const container = document.getElementById('projectList');
+            container.innerHTML = '';
+            projectList.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+                projectCard.innerHTML = `
+                    <div class="project-image">
+                        <img src="${project.screenshots[0]}" alt="${project.name} screenshot">
+                    </div>
+                    <div class="project-details">
+                        <h3>${project.name}</h3>
+                        <button onclick="openProjectModal(${project.id})">Open</button>
+                    </div>
+                `;
+                container.appendChild(projectCard);
+            });
+        }
+
+        // Modal functionality
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+            if (modalId === 'commentModal') {
+                loadCommentGallery();
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Load comment gallery images
+        function loadCommentGallery() {
+            const gallery = document.getElementById('commentGallery');
+            gallery.innerHTML = '';
+            commentGalleryImages.forEach(src => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = 'Comment gallery image';
+                img.onclick = () => openImagePopup(src, img.alt);
+                gallery.appendChild(img);
+                });
+        }
+
+        // Carousel functionality
+        let currentSlide = 0;
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function openProjectModal(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (project) {
+                document.getElementById('projectModalTitle').textContent = project.name;
+                document.getElementById('projectModalDescription').textContent = project.description;
+                const carouselInner = document.getElementById('carouselInner');
+                carouselInner.innerHTML = '';
+                project.screenshots.forEach((src, index) => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = `${project.name} screenshot ${index + 1}`;
+                    img.className = 'carousel-image';
+                    img.onclick = () => openImagePopup(src, img.alt);
+                    carouselInner.appendChild(img);
+                });
+                currentSlide = 0;
+                updateCarousel();
+                openModal('projectModal');
+            }
+        }
+
+        function openImagePopup(src, alt) {
+            const popupImage = document.getElementById('popupImage');
+            popupImage.src = src;
+            popupImage.alt = alt;
+            openModal('imagePopupModal');
+        }
+
+        function updateCarousel() {
+            const carouselInner = document.getElementById('carouselInner');
+            carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < projects[0].screenshots.length - 1) {
+                currentSlide++;
+                updateCarousel();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateCarousel();
+            }
+        }
+
+        function handleTouchStart(event) {
+            touchStartX = event.touches[0].clientX;
+        }
+
+        function handleTouchEnd(event) {
+            touchEndX = event.changedTouches[0].clientX;
+            if (touchStartX - touchEndX > 50) {
+                nextSlide();
+            } else if (touchEndX - touchStartX > 50) {
+                prevSlide();
+            }
+        }
+
+        function buyProject() {
+            window.location.href = 'https://www.instagram.com/soul_society_003';
+        }
+
+        // Load projects on page load
+        displayProjects(projects);
+
+        // Add touch event listeners to carousel
+        const carouselContainer = document.getElementById('carouselInner');
+        if (carouselContainer) {
+            carouselContainer.addEventListener('touchstart', handleTouchStart, false);
+            carouselContainer.addEventListener('touchend', handleTouchEnd, false);
+        }
+
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const hamburger = document.querySelector('.hamburger');
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('open');
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const endOfDay = new Date();
+
+            // Set to 11:59 PM two days from now
+            endOfDay.setDate(now.getDate() + 2);
+            endOfDay.setHours(23, 59, 0, 0);
+
+            const diff = endOfDay - now;
+
+            if (diff <= 0) {
+                document.getElementById("countdown").textContent = "Time's up!";
+                return;
+            }
+
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").textContent =
+                `${hours.toString().padStart(2, '0')}h ` +
+                `${minutes.toString().padStart(2, '0')}m ` +
+                `${seconds.toString().padStart(2, '0')}s`;
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000); // Update every second
+    </script>
+</body>
+</html>
